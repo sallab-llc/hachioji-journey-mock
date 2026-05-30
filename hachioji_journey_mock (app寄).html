@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>八王子ジャーニー様 掲載予定記事一覧</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;font-family:'Noto Sans JP',sans-serif;background:#F2F1F6;color:#001110;-webkit-font-smoothing:antialiased}
+a{color:#001110;text-decoration:none}
+img{width:100%;height:auto;display:block}
+
+/* ---- アプリ外枠 ---- */
+.app-shell{
+  max-width:390px;
+  margin:0 auto;
+  min-height:100vh;
+  background:#fff;
+  position:relative;
+  box-shadow:0 0 30px rgba(0,0,0,.12);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---- ヘッダー ---- */
+.app-header{
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 16px 8px;
+  border-bottom:1px solid #eee;
+  position:sticky;
+  top:0;
+  z-index:100;
+  gap:8px;
+}
+.app-header__logo{
+  font-size:18px;
+  font-weight:700;
+  color:#25807f;
+  letter-spacing:-.02em;
+}
+.app-header__sub{
+  font-size:10px;
+  color:#999;
+  margin-top:2px;
+  text-align:center;
+}
+
+/* ---- タブバー ---- */
+.tab-bar{
+  display:flex;
+  overflow-x:auto;
+  background:#fff;
+  border-bottom:1px solid #eee;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+  position:sticky;
+  top:53px;
+  z-index:99;
+}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-item{
+  flex-shrink:0;
+  padding:10px 16px;
+  font-size:13px;
+  font-weight:600;
+  color:#999;
+  border-bottom:3px solid transparent;
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  background:none;
+  border-top:none;
+  border-left:none;
+  border-right:none;
+  font-family:inherit;
+}
+.tab-item.active{
+  color:#25807f;
+  border-bottom-color:#25807f;
+}
+
+/* ---- 確認バナー ---- */
+.confirm-banner{
+  background:#f0f9f9;
+  border-bottom:1px solid #c5e0df;
+  padding:10px 16px;
+  font-size:11px;
+  color:#25807f;
+  line-height:1.6;
+}
+.confirm-banner strong{font-weight:700}
+
+/* ---- 記事リスト ---- */
+.news-list{
+  flex:1;
+  background:#fff;
+  padding-bottom:80px;
+}
+
+/* ---- 記事カード ---- */
+.news-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px 16px;
+  border-bottom:1px solid #F2F1F6;
+  cursor:pointer;
+  transition:background .12s;
+  text-decoration:none;
+  color:#001110;
+}
+.news-item:hover{background:#f9fffe}
+.news-item.hidden{display:none}
+
+.news-thumb{
+  width:90px;
+  min-width:90px;
+  height:64px;
+  border-radius:6px;
+  overflow:hidden;
+  background:#e8ede9;
+  flex-shrink:0;
+}
+.news-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.news-thumb-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:#a0b8a8;
+  background:#eef5f2;
+}
+
+.news-body{
+  flex:1;
+  min-width:0;
+}
+.news-title{
+  font-size:13px;
+  font-weight:500;
+  line-height:1.5;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-bottom:6px;
+}
+.news-meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.news-source{
+  font-size:11px;
+  color:#25807f;
+  font-weight:500;
+}
+.news-date{
+  font-size:11px;
+  color:#999;
+}
+.area-badge{
+  font-size:10px;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:3px;
+}
+.area-badge.south{background:#e6f4f4;color:#25807f}
+.area-badge.minami{background:#e8f0fb;color:#1d5fa4}
+
+.news-link-icon{
+  display:inline-block;
+  width:12px;
+  height:12px;
+  margin-left:3px;
+  vertical-align:middle;
+  opacity:.5;
+}
+
+/* ---- フッターナビ ---- */
+.footer-nav{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:390px;
+  background:#fff;
+  border-top:1px solid #eee;
+  display:flex;
+  z-index:200;
+}
+.footer-nav-item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:8px 4px 10px;
+  font-size:10px;
+  color:#999;
+  cursor:pointer;
+  gap:4px;
+}
+.footer-nav-item.active{color:#25807f}
+.footer-nav-item svg{width:22px;height:22px}
+
+/* ---- 件数バッジ ---- */
+.count-bar{
+  padding:8px 16px;
+  font-size:11px;
+  color:#999;
+  background:#fafafa;
+  border-bottom:1px solid #F2F1F6;
+}
+.count-bar span{color:#25807f;font-weight:700}
+
+/* ---- 空状態 ---- */
+.empty-state{
+  text-align:center;
+  padding:60px 20px;
+  color:#bbb;
+  font-size:13px;
+  display:none;
+}
+.empty-state.show{display:block}
+
+@media(max-width:400px){
+  .footer-nav{width:100%}
+  .app-shell{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ヘッダー -->
+  <header class="app-header">
+    <div>
+      <div class="app-header__logo">南大沢アプリ</div>
+      <div class="app-header__sub">八王子ジャーニー様 掲載確認資料</div>
+    </div>
+  </header>
+
+  <!-- タブバー -->
+  <nav class="tab-bar" id="tabBar">
+    <button class="tab-item active" onclick="filterArea('all',this)">全て</button>
+    <button class="tab-item" onclick="filterArea('south',this)">南大沢・堀之内</button>
+    <button class="tab-item" onclick="filterArea('minami',this)">みなみ野・鑓水</button>
+  </nav>
+
+  <!-- 確認バナー -->
+  <div class="confirm-banner">
+    <strong>掲載内容のご確認をお願いします。</strong><br>
+    南大沢アプリへの掲載を予定している八王子ジャーニー様の記事一覧サンプルです。<br>
+    情報元：<a href="https://8dabe.com" target="_blank" style="color:#25807f;text-decoration:underline">8dabe.com</a> ／ 資料作成日：2026年5月30日
+  </div>
+
+  <!-- 件数表示 -->
+  <div class="count-bar" id="countBar"><span id="countNum">20</span> 件</div>
+
+  <!-- 記事一覧 -->
+  <div class="news-list" id="newsList"></div>
+  <div class="empty-state" id="emptyState">該当する記事がありません</div>
+
+  <!-- フッターナビ -->
+  <nav class="footer-nav">
+    <div class="footer-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      HOME
+    </div>
+    <div class="footer-nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+      投稿記事一覧
+    </div>
+    <div class="footer-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+      マップ
+    </div>
+    <div class="footer-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      カレンダー
+    </div>
+    <div class="footer-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      生活情報
+    </div>
+  </nav>
+
+</div>
+
+<script>
+const ARTICLES=[{"date":"2026年05月24日","title":"半導体が世界を動かす？日本経済のこれからを考える講座が八王子で開催","url":"https://8dabe.com/2026/05/24/hachioji-seminar-minamiosawa-20/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/07-th.jpg","area":"南大沢・堀之内"},{"date":"2026年05月23日","title":"冠婚葬祭で慌てない！初心者向け筆ペン講座が八王子で開催","url":"https://8dabe.com/2026/05/23/hachioji-seminar-minamiosawa-19/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/06-th.jpg","area":"南大沢・堀之内"},{"date":"2026年05月22日","title":"心と呼吸を整える！初心者向け「はじめての坐禅体験」八王子で開催","url":"https://8dabe.com/2026/05/22/hachioji-seminar-minamiosawa-18/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/05-th.jpg","area":"南大沢・堀之内"},{"date":"2026年05月21日","title":"落語と体操で笑って健康に！桂右團治師匠の講座が八王子で開催","url":"https://8dabe.com/2026/05/21/hachioji-seminar-minamiosawa-17/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/04-th.jpg","area":"南大沢・堀之内"},{"date":"2026年05月21日","title":"【新店】南大沢アウトレットにアウトドアブランド『Foxfire』が仲間入り","url":"https://8dabe.com/2026/05/21/mitsui-shopping-park-foxfire/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/IMG_7578.jpeg","area":"南大沢・堀之内"},{"date":"2026年05月13日","title":"八王子に『果実屋珈琲』がやってくる！松木・多摩ニュータウン通り沿いに9月上旬オープン予定","url":"https://8dabe.com/2026/05/13/kajitsuya_cafe/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/S__84844557_0.jpg","area":"南大沢・堀之内"},{"date":"2026年05月13日","title":"【6/13・14】食べて動いてまた食べる！『ハイカロリー祭』南大沢で開催！","url":"https://8dabe.com/2026/05/13/highkcal-fes/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/ae46b1f460ee46f789c27b264a6cb421-10.jpg","area":"南大沢・堀之内"},{"date":"2026年05月05日","title":"この道40年 夢をかなえたお店 グリーンヒル寺田商店街『Deli Bon Courage』","url":"https://8dabe.com/2026/05/05/deli-bon-courage-3/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/05/IMG_3297.jpg","area":"みなみ野・鑓水"},{"date":"2026年04月27日","title":"もっと美味しく もっと楽しく 八王子市みなみ野シティ『Trattoria Shun』","url":"https://8dabe.com/2026/04/27/trattoria-shun/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/04/IMG_20260410_154657.jpg","area":"みなみ野・鑓水"},{"date":"2026年04月25日","title":"米粉100%のもちふわパン！『038bakery』が大塚にオープン","url":"https://8dabe.com/2026/04/25/038bakery/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/04/ae46b1f460ee46f789c27b264a6cb421-25.jpg","area":"南大沢・堀之内"},{"date":"2026年04月24日","title":"【5/2〜5/4】今年は5月開催！『パンのフェス2026GW in 三井アウトレットパーク 多摩南大沢』","url":"https://8dabe.com/2026/04/24/pannofes-4/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/04/11710-4100-16e7a5cf9605fca43879f7f19cebf34d-1200x675-1-1.jpg","area":"南大沢・堀之内"},{"date":"2026年04月22日","title":"南大沢に富士山が誕生！？『溜池公園』壁画リニューアルレポ","url":"https://8dabe.com/2026/04/22/hekiga-renewal-event/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/04/IMG_4990_0BEC0237.jpeg","area":"南大沢・堀之内"},{"date":"2026年02月16日","title":"みなみ野の『蔦屋書店』が変わる？店内で始まった新しい動き","url":"https://8dabe.com/2026/02/16/furu1-hachiojiminamino/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/02/1_IMG_3651.jpeg","area":"みなみ野・鑓水"},{"date":"2026年02月13日","title":"学生が作る冬イベント！「ぱっちぃと伝説のスノーフェスティバル」日本工学院八王子で開催【2/21】","url":"https://8dabe.com/2026/02/13/nihonkogakuin-event/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/02/ae46b1f460ee46f789c27b264a6cb421-11.jpg","area":"みなみ野・鑓水"},{"date":"2026年02月12日","title":"【2/24オープン】みなみ野の家系ラーメン『横濱家』跡地が全く違う業態に変身","url":"https://8dabe.com/2026/02/12/fit-place-hachiojiminamino/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/01/IMG_3144.jpeg","area":"みなみ野・鑓水"},{"date":"2026年01月21日","title":"テレビで紹介！『ことり亭』の絶品煮込みハンバーグ、レシピ公開。家で再現してみる？","url":"https://8dabe.com/2026/01/21/kotoritei-4/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2026/01/kotoritei-25-1.jpg","area":"みなみ野・鑓水"},{"date":"2026年01月07日","title":"八王子で冬の味覚の王様を味わい尽くす！『酒菜』で鳥取直送松葉ガニを含めたカニ三昧コース","url":"https://8dabe.com/2026/01/07/kushina-5/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2025/12/DSC06846-2.jpg","area":"みなみ野・鑓水"},{"date":"2025年12月31日","title":"創業200年！老舗和菓子店『榮太樓總本鋪』の秘密に迫る","url":"https://8dabe.com/2025/12/31/eitarosouhonpo/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2025/12/IMG_3833-1.jpg","area":"みなみ野・鑓水"},{"date":"2025年12月29日","title":"この広い駐車場で何が始まる？鑓水のスーパービバホームで新年イベント開催","url":"https://8dabe.com/2025/12/29/vivahome-tamabi/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2025/12/1_IMG_2372.jpeg","area":"みなみ野・鑓水"},{"date":"2025年12月19日","title":"【12/20(土)】パフォーマンス＆キッチンカーも！みなみ野イルミネーションが熱い！","url":"https://8dabe.com/2025/12/19/minamino-illumination/","image":"https://p1-f7df979d.imageflux.jp/c!/w=860,h=483,f=webp:auto,a=2,u=0,q=75,ir=auto/2025/12/5093730a8fc0a3f6d37a9300042b1deb.jpg","area":"みなみ野・鑓水"}];
+
+let currentFilter='all';
+
+function getAreaClass(area){return area==='南大沢・堀之内'?'south':'minami';}
+
+function formatDate(d){return d.replace('年','/').replace('月','/').replace('日','');}
+
+function render(){
+  const list=document.getElementById('newsList');
+  const empty=document.getElementById('emptyState');
+  const filtered=currentFilter==='all'?ARTICLES:ARTICLES.filter(a=>getAreaClass(a.area)===currentFilter);
+
+  list.innerHTML='';
+  document.getElementById('countNum').textContent=filtered.length;
+
+  if(filtered.length===0){empty.classList.add('show');return;}
+  empty.classList.remove('show');
+
+  filtered.forEach(a=>{
+    const ac=getAreaClass(a.area);
+    const el=document.createElement('a');
+    el.className='news-item';
+    el.href=a.url;
+    el.target='_blank';
+    el.innerHTML=`
+      <div class="news-thumb">
+        ${a.image
+          ? `<img src="${a.image}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;news-thumb-placeholder&quot;></div>'">`
+          : '<div class="news-thumb-placeholder"></div>'}
+      </div>
+      <div class="news-body">
+        <p class="news-title">${a.title}<svg class="news-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></p>
+        <div class="news-meta">
+          <span class="news-source">八王子ジャーニー</span>
+          <span class="news-date">${formatDate(a.date)}</span>
+          <span class="area-badge ${ac}">${a.area}</span>
+        </div>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+
+function filterArea(area,btn){
+  currentFilter=area;
+  document.querySelectorAll('.tab-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
